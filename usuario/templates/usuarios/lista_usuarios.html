@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+    {% block title %}
+        {{'Listado de Usuarios'}}
+    {% endblock%}
+
+    {% block content %}
+    {% if object_list %}
+    <div class="container-fluid ">
+        {% for usuario in object_list %}
+        <div class="card" id="articulo" style="width: 18rem;">
+                    <div class="card-body">
+
+                         <div class="data">
+                               <h2>
+                                    <a href="#">{{ usuario.nombre }}</a>
+                               </h2>
+                            <h3 class="usuario"> {{ usuario.apellidos }} </h3><!-- coin esto sacamos el nombre cmpleto del usuario que vende el articulo-->
+                                <h3 clase="precio"><strong>{{usuario.cif}} {{ "€" }} </strong></h3>
+                             <a href="" class="btn btn danger"> Eliminar</a>
+                             <a href="" class="btn btn success"> Editar</a>
+                        </div>
+                    </div>
+        </div>
+        {%endfor%}
+    </div>
+        {% else %}
+            <h2>No existen usuarios</h2>
+        {% endif %}
+
+
+    {% endblock %}
+
+
+
+
+
+
+
+
+

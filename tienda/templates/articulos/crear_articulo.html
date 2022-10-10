@@ -1,0 +1,135 @@
+{% extends 'layout.html'%}
+
+{% block title %}Crear Articulo{% endblock title%}
+
+{% block content %}
+
+
+<h1 class="d-flex justify-content-center m-5"><strong>CREAR ARTICULO</strong></h1>
+<div class="container-fluid">
+
+    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+
+        <div class="col-8 mx-auto">
+            {{ form.media }}
+
+
+            <div class="d-flex flex-column bd-highlight">
+                {% for fields in form %}
+                <i>{% if field.field.required %}<i class="fa fa-asterisk text-red"></i> {% endif %}{{ field.label_tag }}
+                    <div class="col-5 pt-2">
+                        <label for="cif">{{ fields.label }}</label>
+
+                    </div>
+
+                    {{ fields }}
+
+
+                    {% endfor %}
+            </div>
+
+            <button class="btn btn-primary" type="submit" value="Registrarse" id="register">Guardar</button>
+        </div>
+
+
+    </form>
+</div>
+
+
+
+
+{% endblock content %}
+{% block footer%}
+ {% endblock %}
+
+                                {{ form.media }}
+
+                                {{ form.as_p }}
+                        {% if form.proveedor.label %}
+
+                        {{ request.user.first_name }}
+
+                         {%endif%}
+
+<!--
+<div class="card-header"><strong  style="margin-left:500px;" >Formulario - </strong>Articulo</div>
+                            <div class="card-body card-block">
+                                <div class="form-group">
+                                    <label for="codigo" class=" form-control-label">{{ form.codigo.label }}</label>
+                                    <div type="text" name="codigo">{{ form.codigo }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nombre" class=" form-control-label">{{ form.nombre.label }}</label>
+                                    <div type="text" name="nombre" >{{ form.nombre }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion" class=" form-control-label">{{ form.descripcion.label|safe }}</label>
+                                    <textarea name="descripcion" id="id_descripcion" data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: 835, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;language&quot;: &quot;es-es&quot;}" data-external-plugin-resources="[]" data-id="id_descripcion" data-type="ckeditortype" rows="6" cols="180"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="caracteristicas" class=" form-control-label">{{ form.caracteristicas.label|safe }}</label>
+                                    <textarea name="caracteristicas" id="id_caracteristicas" data-processed="0" data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: 835, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;language&quot;: &quot;es-es&quot;}" data-external-plugin-resources="[]" data-id="id_descripcion" data-type="ckeditortype" rows="6" cols="180"></textarea>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="proveedor" class=" form-control-label">{{ form.proveedor.label }}</label>
+                                    <div type="text" name="proveedor" >{{ request.user.first_name }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="categorias" class=" form-control-label">{{ form.categorias.label }}</label>
+                                    <div type="text" name="categorias" >{{ form.categorias }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="publicado" class=" form-control-label">{{ form.publicado.label }}</label>
+                                    <div type="checkbox" name="publicado">{{ form.publicado }}</div>
+                                </div>
+                                 <div class="form-group">
+                                    <label for="precio" class=" form-control-label">{{ form.precio.label }}</label>
+                                    <div type="text" name="precio" >{{ form.precio }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="imagen" class=" form-control-label">{{ form.image.label }}</label>
+                                    <div type="file" name="imagen" >{{ form.image }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="imagen1" class=" form-control-label">{{ form.image1.label }}</label>
+                                    <div type="file" name="imagen1" >{{ form.image1 }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="imagen2" class=" form-control-label">{{ form.image2.label }}</label>
+                                    <div type="file" name="imagen2" >{{ form.image2 }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="imagen3" class=" form-control-label">{{ form.image3.label }}</label>
+                                    <div type="file" name="imagen3" >{{ form.image3 }}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="stock" class=" form-control-label">{{ form.stock.label }}</label>
+                                    <div type="text" name="stock" >{{ form.stock }}</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="stock_minimo" class=" form-control-label">{{ form.stock_minimo.label }}</label>
+                                    <div type="text" name="stock" >{{ form.stock_minimo }}</div>
+                                </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="col-8 mx-auto">
+
+            <div class="d-flex flex-column bd-highlight">
+                {% for fields in form %}
+                <div class="col-5 pt-2">
+                    <label for="cif">{{ fields.label }}</label>
+                </div>
+
+                {{ fields }}
+
+                {% endfor %}
+            </div>
+
+            <button class="btn btn-primary" type="submit" value="Registrarse" id="register">Guardar</button>
+        </div>
+
+-->

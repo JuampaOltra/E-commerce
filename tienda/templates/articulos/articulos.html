@@ -1,0 +1,159 @@
+  {% extends 'layout.html' %}
+
+    {% block title %}
+        {{titulo}}
+    {% endblock%}
+
+    {% block content %}
+  <main xmlns="http://www.w3.org/1999/html">
+
+      {% block barra_busqueda%}
+      {% endblock barra_busqueda%}
+      <section class="bg-light">
+          <div class="container pb-5">
+
+              <div class="row">
+                  <div class="col-lg-5 mt-5">
+                      <div class="card mb-3">
+
+                          <div class="imagen">
+                          <img  class="card-img img-fluid" src="{{ articulo.image.url }}" alt="Card image cap" id="product-detail" >
+                            </div>
+                      </div>
+                        {% if articulo.image1 != 'null' or articulo.image2 != 'null'  %}
+                      <div class="row">
+
+                          <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item " data-bs-ride="carousel">
+                              <div class="carousel-inner product-links-wap" role="listbox">
+                                  <div class="carousel-item active align-self-center">
+                                      <div class="row">
+
+                                        {% if articulo.image1 != 'null' %}
+                                          <div class="col-4 ">
+                                              <a href="#">
+                                                  <img class="card-img img-fluid" src="{{ articulo.image1.url }}">
+                                              </a>
+                                          </div>
+                                        {% endif %}
+                                          <div class="col-4 ">
+                                        {% if articulo.image2 != 'null' %}
+                                              <a href="#">
+                                                  <img class="card-img img-fluid" src="{{ articulo.image2.url }}">
+                                              </a>
+                                          </div>
+                                          {% endif %}
+                                        {% if articulo.image3 != 'null' %}
+                                          <div class="col-4 ">
+
+                                              <a href="#">
+                                                  <img class="card-img img-fluid" src="{{ articulo.image1.url }}">
+                                              </a>
+                                          </div>
+                                        {% endif %}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+                  </div>
+                  <!-- col end -->
+                  <div class="col-lg-7 mt-5">
+                      <div class="card">
+                          <div class="card-body">
+                              <h1 class="h2">{{ articulo.nombre }}</h1>
+                              <p class="h3 py-2">{{ articulo.precio }}€</p>
+                              <ul class="list-inline">
+                                  <li class="list-inline-item">
+                                      <h6>{{"Vendido por:"}}</h6>
+                                  </li>
+                                  <li class="list-inline-item">
+                                      <p class="text-muted"><strong>{{articulo.proveedor}}</strong></p>
+                                  </li>
+                              </ul>
+
+                              <div class="accordion accordion-flush" id="accordionFlushExample">
+                                  <div class="accordion-item">
+                                      <h2 class="accordion-header" id="flush-headingOne">
+                                          <a class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                              Características
+                                          </a>
+                                      </h2>
+                                      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                          <div class="accordion-body">{{articulo.caracteristicas|safe}}</div>
+                                      </div>
+                                  </div>
+                                  <div class="accordion-item">
+                                      <h2 class="accordion-header" id="flush-headingTwo">
+                                          <a href="#" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                              Opinión
+                                          </a>
+                                      </h2>
+                                      <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                          <div class="accordion-body">
+                                              <p class="py-2">
+
+                                              <form action="{% url 'opinion' articulo.id %}" method="POST" id="formulario_opinion">{% csrf_token %}
+                                                  <div class="form-group estrellas">
+                                                      <input type="checkbox" name="puntos" id="unaestrella"  value="1">
+                                                      <label for="unaestrella">★</label>
+                                                      <input type="checkbox" name="puntos" id="dosestrellas" value="2">
+                                                      <label for="dosestrellas">★</label>
+                                                      <input type="checkbox" name="puntos" id="tresestrellas" value="3">
+                                                      <label for="tresestrellas">★</label>
+                                                      <input type="checkbox" name="puntos" id="cuatroestrellas" value="4">
+                                                      <label for="cuatroestrellas">★</label>
+                                                      <input type="checkbox" name="puntos" id="cincoestrellas" value="5">
+                                                      <label for="cincoestrellas">★</label>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <span class="list-inline-item text-dark">Deja tu opinión</span>
+                                                      <textarea type="text" name="txtopinion" class="form-control" id="" cols="20" rows="5"></textarea>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <input type="submit" class="btn btn-success btn-block text-white" value="Guardar">
+                                                  </div>
+                                              </form>
+                                               <div class="container-fluid">
+
+                                                  {% for opinion in opiniones %}
+
+                                                  <h3>{{opinion.valor}} <i>{{opinion.user.first_name}} {{opinion.user.last_name}}</i></h3>
+                                                   <h4 id="estrellas"><span>{{opinion.estrellas}}</span></h4>
+                                                  <p>{{ opinion.comentario}}</p>
+
+                                                  {% endfor %}
+                                                  <hr>
+
+                                              </div>
+
+                                              </p>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                              </div>
+                              <p>{{articulo.disponibilidad}}</p>
+                              <p>{{articulo.poco_stock}}</p>
+                                {% if request.user.is_authenticated %}
+                              <div class="d-grid gap-2 col-9 d-md-flex justify-content-md-end">
+                                  <a href="{% url 'agregar_articulo_carro' articulo.id %}" class="btn btn-primary" type="button">Comprar</a>
+                                  {% endif %}
+                                  {% if articulo.proveedor.cif == request.user.cif %}
+                                  <a href="{% url 'editar_articulo' articulo.id %}" class="btn btn-primary" type="button" style="margin-left:10px">Editar</a>
+                                  {% endif %}
+                              </div>
+
+
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              </div>
+      </section>
+
+
+
+  </main>
+    {% endblock %}

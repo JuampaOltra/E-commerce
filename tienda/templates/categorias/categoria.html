@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+    {% block title %}
+        {{categoria.nombre}}
+    {% endblock%}
+
+    {% block content %}
+
+    <div class="container-fluid" id="categoria">
+        <h1>{{categoria.nombre}}</h1>
+        <p>{{categoria.descripcion |safe}}</p>
+
+       {% for art in articulos %}
+        <div class="card" id="articulo"style="width: 20rem;">
+        {% if art.image != 'null' and art.image.url|length >= 1 %}
+            <img src="{{ art.image.url }}" alt="No disponible">
+            {% endif %}
+                  <div class="card-body">
+
+                         <div class="data">
+                               <h2>
+                                    <a href="{% url 'articulo' art.id %}">{{ art.nombre }}</a>
+                               </h2>
+                            <p>
+                                {% for categoria in articulo.categorias.all %}
+                                <a href="#">{{ categoria }}</a>
+                                {%  if forloop.counter < articulo.categoria.all|length %}
+                                - <!-- realmente el guion habria que ponerlo asi {{' - '}} pero lo ccoge igual asi sin nada, solo el guion-->
+                                {% endif %}
+                                {% endfor %}
+                            </p>
+                            <span class="usuario"> {{ art.user.get_full_name }} </span><!-- esto lo he buscado como los atraibutos que tiene user de djang y tiene un monton, este concretamente es un metodo xo se pone sin ()-->
+                                <h3 clase="precio"><strong>{{art.precio}} {{ "€" }} </strong></h3>
+                                <p>
+                                    {{ art.descripcion|safe}}
+                                    <br>
+                                </p>
+                        </div>
+                  </div>
+        </div>
+        {%endfor%}
+    </div>
+    {% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+    {% block title %}
+        Registro de Usuarios
+    {% endblock%}
+
+    {% block content %}
+
+        <div class="container-fluid">
+            <h1 id="title-register">{{title}}</h1>
+                {{register_form.errors}}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="col-8 mx-auto">
+
+                                <div class="d-flex flex-column bd-highlight">
+                                    {% for fields in form %}
+                                        <div class="col-5 pt-2">
+                                            <label for="cif">{{ fields.label }}</label>
+                                        </div>
+
+                                            {{ fields }}
+
+                                    {% endfor %}
+                                </div>
+
+                                    <button class="btn btn-primary" type="submit" value="Registrarse" id="register">Registrarse</button>
+
+                        </div>
+                    </form>
+        </div>
+
+
+    {% endblock %}

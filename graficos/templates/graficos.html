@@ -1,0 +1,277 @@
+{% extends 'layout.html' %}
+
+    {% block title %}
+        {{article.title}}
+    {% endblock%}
+
+
+      {% block barra_busqueda%}
+      {% endblock barra_busqueda%}
+
+
+    {% block content %}
+
+<figure class="highcharts-figure">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="top_five">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</figure>
+    <script type="application/javascript">
+
+    _categories = {{nombres_mas_vendidos|safe}}
+
+    Highcharts.chart('top_five', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Artículos más vendidos'
+    },
+    subtitle: {
+        text: 'Tienda: <a href="{% url 'list_articulos' %}">Ver productos</a>'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: 0,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            },
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Cantidad'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: '<b>{point.y} Vendidos</b>'
+    },
+    plotOptions: {
+        column: {
+        colorByPoint: true
+        }
+    },
+
+    series: [{
+        name: 'Artículo',
+        data: {{ series_mas_vendidos | safe }},
+        dataLabels: {
+            enabled: true,
+            rotation: -2,
+            color: '#FFF5FB',
+            align: 'right',
+            format: '{point.y:.1f}', // one decimal,
+            y: 20, // 20 pixels down from the top,
+            style: {
+                fontSize: '14px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+        </script>
+
+<figure class="highcharts-figure">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="grafico">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</figure>
+    <script type="application/javascript">
+
+ _categories={{ nombres_mas_precio | safe }}
+    Highcharts.chart('grafico', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Artículos más caros'
+        },
+        subtitle: {
+            text: 'Tienda:: ' +
+                '<a href="{% url 'list_articulos' %}" ' +
+                'target="_blank">Ver artículos</a>'
+        },
+        xAxis: {
+            categories: [
+                'Artículos'
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            title: {
+                useHTML: true,
+                text: 'Euros'
+            }
+        },
+
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: {{series_mas_precio | safe }}
+    });
+
+    </script>
+
+<!--
+   _categories = {{nombres|safe}}
+    Highcharts.chart('top_five', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Historic World Population by Region'
+    },
+    subtitle: {
+        text: 'Source: <a ' +
+            'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+            'target="_blank">Wikipedia.org</a>'
+    },
+    xAxis: {
+        categories: _categories,
+        title: {
+            text: null
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Cantidad',
+            align: 'short'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        valueSuffix: ' vendidos'
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -10,
+        y: 200,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#DBF5F2',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: {{series|safe}}
+
+});
+
+
+        <script type="application/javascript">
+
+Highcharts.chart('top_five', {
+
+    chart: {
+        type: 'variwide'
+    },
+
+    title: {
+        text: 'Artículos más vendidos'
+    },
+
+    subtitle: {
+        text: 'Tienda: <a href="{% url 'list_articulos' %}">Ver articulos</a>'
+    },
+
+    xAxis: {
+        type: 'category'
+    },
+
+    caption: {
+        text: 'Column widths are proportional to GDP'
+    },
+
+    legend: {
+        enabled: false
+    },
+
+    series: [{
+        name: 'Labor Costs',
+        data: {{data |safe }},
+        dataLabels: {
+            enabled: true,
+            format: '{point.y:.0f} Vendidos'
+        },
+        tooltip: {
+            pointFormat: 'Labor Costs: <b> {point.y}/h</b><br>' +
+                'Precio: <b> {point.z} €</b><br>'
+        },
+        colorByPoint: true
+    }]
+
+});
+
+
+        </script>
+-->
+
+{% endblock %}
+<!--
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Los 5 artículos más vendidos'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y} Vendidos'
+                    }
+                }
+            },
+            series: {{series|safe}}
+        });
+
+-->

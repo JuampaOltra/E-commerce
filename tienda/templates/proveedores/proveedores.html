@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+
+   {% block content %}
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<div class="container-fluid col-lg-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning" id="messages">{{message}}</div>
+        {% endfor %}
+        {% endif %}
+    <!--
+        <div class="card" id="articulo" style="width: 14rem;">
+                    <div class="card-body">
+
+                         <div class="data">
+                               <h2>
+                                    <a href="#">{{ proveedor.nombre }}</a>
+                               </h2>
+                            <h3 class="usuario"> </h3> coin esto sacamos el nombre cmpleto del usuario que vende el articulo
+                                <h3 clase="precio"><strong> {{ "€" }} </strong></h3>
+                             <a href="" class="btn btn danger"> Eliminar</a>
+                             <a href="" class="btn btn success"> Editar</a>
+                        </div>
+                    </div>
+        </div> -->
+
+
+<table class="table">
+  <thead style="color:#7BA2F5">
+    <tr>
+      <th scope="col">Articulo</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Precio</th>
+        <th scope="col">Número de ventas</th>
+      <th scope="col">Facturación</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for art in articulo %}
+  <tr>
+      <th scope="row">{{ art.nombre }}</th>
+      <td>{{ art.stock }}</td>
+      <td>{{ art.precio }} €</td>
+      <td>{{ art.num_ventas }}</td>
+      <td>{{ art.total }} €</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+
+    <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-12" aria-hidden="true"></a>
+
+    <figure class="highcharts-figure">
+    <div id="container"></div>
+
+    </figure>
+
+    <script type="application/javascript">
+
+        // Data retrieved from https://netmarketshare.com/
+Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+    title: {
+        text: 'Canrtidad: ' +
+                '<br><a href="{% url 'list_articulos' %}" ' +
+                'target="_blank"><br>artículos<br>vendidos<br></a>',
+        align: 'center',
+        verticalAlign: 'middle',
+        y: 60
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br><b>Vendidos:{point.y}</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            dataLabels: {
+                enabled: true,
+                distance: -50,
+                style: {
+                    fontWeight: 'bold',
+                    color: 'white'
+                }
+            },
+            startAngle: -90,
+            endAngle: 90,
+            center: ['50%', '75%'],
+            size: '110%'
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Porcentaje de venta',
+        innerSize: '50%',
+        data: {{ data |safe }}
+
+    }]
+});
+
+
+    </script>
+  <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-12" aria-hidden="true"></a>
+    </div>
+    {% endblock %}

@@ -1,0 +1,68 @@
+
+    <div class="container-fluid">
+
+        <table class="table table-bordered" style="color:black;">
+
+            <thead>
+                <tr>
+                    <th colspan="3" class="text-center">
+                        Carro de compras
+                    </th>
+                </tr>
+                 <tr>
+                    <th  class="text-center">
+                        Articulo
+                    </th>
+                     <th  class="text-center">
+                        Cantidad
+                    </th>
+                     <th  class="text-center">
+                        Precio
+                    </th>
+                </tr>
+
+
+            </thead>
+            <tbody>
+            {% if request.session.carro.items %}
+                {% for key, value in request.session.carro.items  %}
+                    <tr class="text-center">
+                        <td>
+                            {{value.nombre}}
+                        </td>
+                         <td>
+                            {{value.cantidad}}
+                             <a href="{% url 'agregar_articulo_carro' value.articulo_id %}" class="btn btn-sm btn-secondary" style="margin-left:10px;">+</a>
+                             <a href="{% url 'restar_articulo_carro' value.articulo_id %}" class="btn btn-sm btn-secondary">-</a><br>
+                        </td>
+                         <td>
+                            {{value.precio}} €
+                        </td>
+                    </tr>
+                {% endfor%}
+            {% else %}
+                <tr>
+                    <td colspan="3">
+                        <p class="alert alert-warning text-center">
+                            Sin Productos
+                        </p>
+
+                    </td>
+                </tr>
+            {% endif%}
+
+            </tbody>
+            <tfoot>
+                <tr>
+
+                    <td  colspan="3" class="text-right">
+                        Total: {{importe_total_carro}} €
+                    </td>
+
+                </tr>
+
+            </tfoot>
+
+
+        </table>
+    </div>

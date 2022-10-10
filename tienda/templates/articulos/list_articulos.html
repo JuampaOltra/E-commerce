@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+    {% block title %}
+        {{article.title}}
+    {% endblock%}
+
+    {% block content %}
+
+    <div class="container-fluid ">
+
+
+
+
+        {% for articulo in articulos %}
+        <div class="card" id="articulo" style="width: 18rem;">
+           {% if articulo.image != 'null' and articulo.image.url|length >= 1 %}
+            <img src="{{ articulo.image.url }}" alt="No disponible">
+            {% endif %}
+                    <div class="card-body">
+
+                         <div class="data">
+                               <h2>
+                                    <a href="{% url 'articulo' articulo.id %}">{{ articulo.nombre }}</a>
+                               </h2>
+                            <p>
+                                {% for categoria in articulo.categorias.all %}
+                                <a href="{% url 'categoria' categoria.id %}">{{categoria.nombre}}</a>
+                                {%  if forloop.counter < articulo.categorias.all|length %}
+                                -
+                                {% endif %}
+                                {% endfor %}
+                            </p>
+                                <h3 clase="precio"><strong>{{articulo.precio}} {{ "€" }} </strong></h3>
+                                <p>
+                                    <b>{{ articulo.descripcion | safe }}</b>
+                                    <hr>
+                                </p>
+                                     <h6 class="usuario"> Vendido por: {{ articulo.proveedor.nombre }} </h6><!-- coin esto sacamos el nombre cmpleto del usuario que vende el articulo-->
+
+                        </div>
+                    </div>
+            <!--
+            <div class="card-footer">
+                <a href="{% url 'agregar_articulo_carro' articulo.id %}" class="btn btn-primary" type="button"> Agregar </a>
+            </div>
+            -->
+        </div>
+        {%endfor%}
+    </div>
+    <div class="pagination">
+        {% if articulos.has_previous %}
+        <a href="?page=1">&laquo;Primero</a>
+        <a href="?page={{ articulos.previous_page_number }}">Anterior</a>
+        {% endif%}
+
+        <span class="actual">
+            Página {{articulos.number}} de {{articulos.paginator.num_pages}}
+        </span>
+
+         {% if articulos.has_next %}
+        <a href="?page={{ articulos.next_page_number }}">Siguiente</a>
+        <a href="?page={{articulos.paginator.num_pages}}">Última&raquo;</a>
+        {% endif%}
+
+    </div>
+
+
+    {% endblock %}
+
+
+
+
+
+
+
+
+

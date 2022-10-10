@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+    {% block title %}
+        {{page.title}}
+    {% endblock%}
+
+    {% block content %}
+
+
+            <h1 id="title-register">{{title}}</h1>
+                {{register_form.errors}}
+
+
+                    <form method="post" action="">
+                        {% csrf_token %}
+
+                        {% comment %}
+                        {{register_form.as_p}}
+                        {% endcomment %}
+
+                        <div class="col-8 mx-auto campos">
+                            {% for fields in register_form %}
+
+                                <p>{{fields.label}}</p>
+                                <p>{{fields}}</p>
+
+                            {% endfor %}
+
+                            <div class="col-4 mx-auto">
+                                <button class="btn btn-primary" type="submit" value="Registrarse" id="register">Registrarse</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+    {% endblock %}

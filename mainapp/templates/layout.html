@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        {{ titulo }}
+        {% endblock %}
+        | Juampa Dev
+    </title>
+
+
+    {% load static %}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/pulse/bootstrap.min.css" integrity="sha384-L7+YG8QLqGvxQGffJ6utDKFwmGwtLcCjtwvonVZR/Ba2VzhpMwBz51GaXnUsuYbj" crossorigin="anonymous">
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/variwide.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+    <!--estilos descargados-->
+    <!--
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/templatemo.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}"> -->
+
+</head>
+<body>
+
+<header class="header">
+    <div class="container-fluid">
+          <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-4" aria-hidden="true"></a>
+      <div class="row">
+        <div class="col">
+            <div id="logotipo">
+                <img src="{% static 'imagenes/logo.png' %}" alt="logo">
+                <h1>{{ titulo }}</h1>
+            </div>
+        </div>
+      </div>
+
+        <a href="#" tabindex="-1" class="btn btn-primary disabled placeholder col-4" aria-hidden="true" style="float:right;"></a>
+  </div>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="cabecera">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'inicio' %}">Inicio</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                {% if request.user.is_authenticated %}
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'conecta' %}">Top Five</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="{% url 'list_articulos' %}" id="dropdown07XL" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown07XL">
+                        {% for categoria in categorias %}
+                        <li><a class="dropdown-item" href="{% url 'categoria' categoria.0 %}">{{categoria.1}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% if request.user.is_proveedor %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="{% url 'conecta'%}" id="graficos" data-bs-toggle="dropdown" aria-expanded="false" >Proveedores</a>
+                    <ul class="dropdown-menu" aria-labelledby="graficos">
+                        <li><a class="dropdown-item" href="{% url 'crear_articulo' %}">Crear Artículo</a></li>
+                        <li><a class="dropdown-item" href="{% url 'list_proveedores'  %}">Datos</a></li>
+
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% for page in pages %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'page' page.2 %}">{{page.1}}</a>
+                </li>
+                {% endfor %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+                </li>
+
+
+                {% else %}
+
+                <li class="nav-item ">
+                    <a class="nav-link" href="{% url 'registro_usuario' %}">Registro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+
+            {% block barra_busqueda%}
+                <form method="get" class="busqueda">
+                    <div class="nav-item" id="custom-search-input">
+                        <div class="input-group col-md-6 d-flex mx-auto">
+                            <input type="text" class="form-control" placeholder="Buscar..." name="buscar">
+                            <span class="input-group-list">
+                                <i class="icon icon-search"></i>
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            {% endblock barra_busqueda%}
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+
+                    <button class="nav-link active" href="{% url 'listar_carro' %}"  type="button" class="carrito btn btn-primary" id="carrito" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <i>{{user.first_name}} {{user.last_name}} &nbsp;&nbsp;&nbsp;&nbsp;</i>
+                        <span>
+                        {% if numero_articulos > 0 %}
+                        {{numero_articulos}}
+                        {% endif %}
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                        </svg>
+                    </button>
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Carro de compras</h5>
+                                        <button type="button" class="btn-close"id="carrito2"  data-bs-dismiss="modal" aria-label="Close">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
+                                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <!-- incluimos el modal con la informacion del carro -->
+                                    <div class="modal-body">
+                                        {% include "articulos/carro.html" %}
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                                        {% if numero_articulos > 0 %}
+
+                                        <a href="{% url 'limpiar_carro' %}" type="button" class="btn btn-danger">Limpiar Carro</a>
+                                        <a href="{% url 'pedidos' %}" type="button" class="btn btn-primary">Realizar Pedido</a>
+
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+{% block content %}
+<!--contenido de cada pagina-->
+
+
+    <div class="container-fluid box-layout">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success" >{{message}}</div>
+            {% endfor %}
+        {% endif %}
+    {% if user.email %}
+        <h2> Hola {{user.nombre}} {{user.apellidos}} </h2>
+    {% else %}
+        <h2>Identifícate para ver más cosas</h2>
+    {% endif %}
+
+        <hr>
+
+{% endblock %}
+
+{% block footer%}
+<div class="container-fluid">
+  <footer class="py-3 my-4 footer">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      {% if user.email %}
+          <li class="nav-item"><a class="nav-link active" href="{% url 'inicio' %}">Inicio</a></li>
+                {% for page in pages %}
+                    <li class="nav-item">
+                            <a class="nav-link" href="{% url 'page' page.2 %}">{{page.1}}</a>
+                    </li>
+                {% endfor %}
+      {% else %}
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Registro</a></li>
+          <li class="nav-item"><a href="{% url 'login' %}" class="nav-link px-2 text-muted">Login</a></li>
+      {% endif %}
+    </ul>
+    <p class="text-center text-muted">Proyecto Tokio School &copy; Juampa Oltra    -    {%now 'd/m/y'%}</p>
+  </footer>
+ {% endblock %}
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    </div>
+</body>
+</html>
