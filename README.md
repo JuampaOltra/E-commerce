@@ -11,4 +11,4 @@ Proyecto final de curso realizado con Python, Django, Bootstrap, HTML, CSS y MyS
 - [https://juampaoltra.github.io/E-commerce/](https://juampaoltra.github.io/E-commerce/)
 
 ## Imagén de ejemplo
-[![2-Inicio-con-login.jpg](https://i.postimg.cc/fb8j4gb0/2-Inicio-con-login.jpg)](https://postimg.cc/67GGncn9)
+[![Ecommerce.jpg](https://i.postimg.cc/7ZFb53QQ/Ecommerce.jpg)](https://postimg.cc/SnGm5M4W)
