@@ -9,4 +9,4 @@ Proyecto final de curso realizado con Python, Django, Bootstrap, HTML, CSS y MyS
 
 ## Imagenes de ejemplo
 [![Ecommerce.jpg](https://i.postimg.cc/7ZFb53QQ/Ecommerce.jpg)](https://postimg.cc/SnGm5M4W)
-[![art.jpg](https://i.postimg.cc/1zyX0msp/art.jpg)](https://postimg.cc/VJHzmcS6)
+[![carro.jpg](https://i.postimg.cc/k4BT4d6m/carro.jpg)](https://postimg.cc/wyYXfZQf)
